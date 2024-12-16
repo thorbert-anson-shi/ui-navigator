@@ -37,5 +37,3 @@ jobs:
           project: "ui-navigator-api"
           entrypoint: "main.ts"
           root: ""
-          
-          

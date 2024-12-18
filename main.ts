@@ -1,6 +1,14 @@
-import { Hono } from "hono";
-import { Location, Path } from "./data.ts";
+import "jsr:@std/dotenv/load";
+import { neon } from "jsr:@neon/serverless";
 
+import { Hono } from "hono";
+import locations from "./routes/locations.ts";
+import paths from "./routes/paths.ts";
+
+// Create instance of connection to database
+export const sql = neon(Deno.env.get("DATABASE_URL"));
+
+// Create app + router
 const app = new Hono();
 
 app.get("/", (c) => c.json({
@@ -8,36 +16,16 @@ app.get("/", (c) => c.json({
   availableEndpoints: availableEndpoints
 }))
 
-// TODO: Fix add-location endpoint
-app.post("/add-location", async (c) => {
-  const body = await c.req.json();
-  const location = new Location(body.name, body.lat, body.lon);
-  return c.json(
-    {
-      message: "Location added successfully",
-      location: location.name,
-      lat: location.lat,
-      lon: location.lon,
-    }, 200
-  );
-});
-
-// TODO: Fix add-path endpoint
-app.post("/add-path", async (c) => {
-  const body = await c.req.json();
-
-  const path = body.coordinates;
-
-  return c.json(
-    {
-      message: "Path added successfully",
-      id: path.id,
-      distance: path.distance
-    }
-  );
-});
+app.route("/locations", locations);
+app.route("/paths", paths);
 
 const availableEndpoints = app.routes.map((endpoint) => ({ method: endpoint.method, path: endpoint.path }));
+
+app.onError((err, c) => {
+  return c.json({
+    message: `An internal server error has occurred: ${err}`,
+  }, 500);
+})
 
 app.notFound((c) => {
   return c.json({

@@ -1,5 +1,7 @@
 {
   "imports": {
+    "@neon/serverless": "jsr:@neon/serverless@^0.10.4",
+    "@std/dotenv": "jsr:@std/dotenv@^0.225.3",
     "hono": "jsr:@hono/hono@^4.6.14"
   },
   "tasks": {

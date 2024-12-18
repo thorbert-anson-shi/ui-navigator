@@ -117,11 +117,3 @@ function perpendicularDistance(point: number[], ends: number[][]): number {
 
   return numerator / denominator;
 }
-
-const simplifiedPath = simplifyPath([
-  [3, 0], [1, 1], [3, 2], [4, 3], [2, 4], [3, 5]
-], 1e-30);
-
-simplifiedPath.forEach((point, index) => {
-  console.log(index + ". [" + point[0] + ", " + point[1] + "]");
-})

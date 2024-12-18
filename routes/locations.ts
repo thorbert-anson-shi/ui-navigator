@@ -19,7 +19,7 @@ const app = new Hono()
         name: response.name,
         lon: response.lon,
         lat: response.lat,
-      }
+      },
     }, 201)
   })
   .get("/", async (c) => {
